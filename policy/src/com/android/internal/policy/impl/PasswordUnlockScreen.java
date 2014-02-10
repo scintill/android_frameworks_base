@@ -189,12 +189,19 @@ public class PasswordUnlockScreen extends LinearLayout implements KeyguardScreen
         } else if (entry.length() > MINIMUM_PASSWORD_LENGTH_BEFORE_REPORT ) {
             // to avoid accidental lockout, only count attempts that are long enough to be a
             // real password. This may require some tweaking.
-            mCallback.reportFailedUnlockAttempt();
-            if (0 == (mUpdateMonitor.getFailedAttempts()
-                    % LockPatternUtils.FAILED_ATTEMPTS_BEFORE_TIMEOUT)) {
-                long deadline = mLockPatternUtils.setLockoutAttemptDeadline();
-                handleAttemptLockout(deadline);
+            if (mUpdateMonitor.getFailedAttempts() >=
+                    LockPatternUtils.FAILED_ATTEMPTS_BEFORE_TIMEOUT-1) {
+                //long deadline = mLockPatternUtils.setLockoutAttemptDeadline();
+                //handleAttemptLockout(deadline);
+
+				// Joey: lock and reboot.
+				mPasswordEntry.setEnabled(false);
+				mKeyboardView.setEnabled(false);
+				com.android.internal.app.ShutdownThread.reboot(this.getContext(), null, false);
+				return;
             }
+			// Joey: This was above the if. Moving down here to not do the timeout dialog stuff when we're locking out.
+            mCallback.reportFailedUnlockAttempt();
         }
         mPasswordEntry.setText("");
     }

@@ -67,7 +67,7 @@ public class LockPatternUtils {
      * The maximum number of incorrect attempts before the user is prevented
      * from trying again for {@link #FAILED_ATTEMPT_TIMEOUT_MS}.
      */
-    public static final int FAILED_ATTEMPTS_BEFORE_TIMEOUT = 5;
+    public static final int FAILED_ATTEMPTS_BEFORE_TIMEOUT = 3;
 
     /**
      * The number of incorrect attempts before which we fall back on an alternative
